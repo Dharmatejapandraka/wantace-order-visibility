@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vardhan | Order Visibility</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-mark">V</span><div><strong>Vardhan</strong><small>ORDER VISIBILITY</small></div></div>
+    <div class="nav-label">WORKSPACE</div>
+    <button class="nav active" data-tab="overview">▦ &nbsp; Overview</button>
+    <button class="nav" data-tab="orders">☷ &nbsp; Orders</button>
+    <button class="nav" data-tab="polishing">◈ &nbsp; Polishing batches</button>
+    <div class="sidebar-note"><span class="live-dot"></span> Connected workspace<small>Phase 1 prototype</small></div>
+  </aside>
+  <main class="main">
+    <header class="topbar"><div><p class="eyebrow">OPERATIONS / CONTROL CENTRE</p><h1 id="page-title">Good morning, team</h1><p class="muted">A single view of orders, blockers and outsourced polishing.</p></div><button class="primary" id="new-order-btn">＋ New order</button></header>
+    <section id="overview" class="page">
+      <div class="stat-grid">
+        <article class="stat"><span>Total orders</span><strong id="total-count">—</strong><small>All recorded orders</small></article>
+        <article class="stat"><span>Open orders</span><strong id="pending-count">—</strong><small>Needs follow-up</small></article>
+        <article class="stat warning"><span>Orders on hold</span><strong id="hold-count">—</strong><small>Payment or other blocker</small></article>
+        <article class="stat"><span>Partial dispatches</span><strong id="partial-count">—</strong><small>Balance quantity remains</small></article>
+      </div>
+      <div class="panel"><div class="panel-head"><div><h2>Orders needing attention</h2><p>Open orders and the latest known blocker</p></div><button class="text-btn" data-goto="orders">View all →</button></div><div id="attention-list" class="table-wrap"></div></div>
+      <div class="two-col">
+        <div class="panel"><div class="panel-head"><div><h2>Order stages</h2><p>Current distribution by status</p></div></div><div id="stage-list" class="stage-list"></div></div>
+        <div class="panel callout"><div class="callout-icon">✦</div><h2>Keep the first version simple</h2><p>This prototype focuses on order visibility, blockers, partial dispatches and polishing reconciliation. AI forecasting and marketplace integrations are intentionally outside Phase 1.</p></div>
+      </div>
+    </section>
+    <section id="orders" class="page hidden">
+      <div class="panel"><div class="panel-head"><div><h2>Order register</h2><p>Search orders and update their status</p></div></div>
+        <div class="toolbar"><input id="search" placeholder="Search order, customer or product…"><select id="status-filter"><option value="">All statuses</option><option>New</option><option>In Production</option><option>At Polishing</option><option>Ready to Pack</option><option>Partially Dispatched</option><option>Dispatched</option><option>On Hold</option><option>Returned</option></select></div>
+        <div id="orders-table" class="table-wrap"></div>
+      </div>
+    </section>
+    <section id="polishing" class="page hidden">
+      <div class="panel"><div class="panel-head"><div><h2>Outsourced polishing</h2><p>Record quantity sent and received; confirm units before comparing.</p></div><button class="primary" id="new-batch-btn">＋ Add batch</button></div><div id="batch-table" class="table-wrap"></div></div>
+    </section>
+    <footer>Assessment prototype · Demo data is illustrative, not verified client data.</footer>
+  </main>
+  <dialog id="order-dialog"><form id="order-form" method="dialog"><div class="dialog-head"><div><p class="eyebrow">ORDER REGISTER</p><h2>Create an order</h2></div><button type="button" class="icon-btn" data-close="order-dialog">✕</button></div>
+    <div class="form-grid">
+      <label>Customer / distributor<input name="customer" required placeholder="e.g. Gupta Traders"></label>
+      <label>Product<input name="product" required placeholder="e.g. Kadai No.10"></label>
+      <label>Quantity<input name="quantity" type="number" min="0.01" step="any" required></label>
+      <label>Unit<select name="unit" required><option>pcs</option><option>set</option><option>dozen</option><option>kg</option></select></label>
+      <label>Rate per unit (₹)<input name="rate" type="number" min="0" step="any" value="0" required></label>
+      <label>Due date<input name="dueDate" type="date"></label>
+      <label>Status<select name="status"><option>New</option><option>In Production</option><option>At Polishing</option><option>Ready to Pack</option><option>Partially Dispatched</option><option>Dispatched</option><option>On Hold</option></select></label>
+      <label class="check-label"><input name="paymentHold" type="checkbox"> Payment hold</label>
+      <label class="wide">Blocker / notes<textarea name="blocker" rows="2" placeholder="Why is it held up?"></textarea></label>
+    </div><p id="order-error" class="error"></p><div class="dialog-actions"><button type="button" class="secondary" data-close="order-dialog">Cancel</button><button class="primary" type="submit">Save order</button></div>
+  </form></dialog>
+  <dialog id="batch-dialog"><form id="batch-form" method="dialog"><div class="dialog-head"><div><p class="eyebrow">OUTSOURCED PROCESS</p><h2>Record polishing batch</h2></div><button type="button" class="icon-btn" data-close="batch-dialog">✕</button></div>
+    <div class="form-grid">
+      <label>Contractor<input name="contractor" required placeholder="Contractor name"></label><label>Product / batch<input name="product" required placeholder="Product or batch reference"></label>
+      <label>Quantity sent<input name="sentQty" type="number" min="0.01" step="any" required></label><label>Sent unit<select name="sentUnit"><option>kg</option><option>pcs</option><option>sets</option></select></label>
+      <label>Quantity received<input name="receivedQty" type="number" min="0" step="any" required></label><label>Received unit<select name="receivedUnit"><option>pcs</option><option>kg</option><option>sets</option></select></label>
+      <label class="wide">Notes<textarea name="notes" rows="2" placeholder="Shortage, count mismatch, follow-up…"></textarea></label>
+    </div><p id="batch-error" class="error"></p><div class="dialog-actions"><button type="button" class="secondary" data-close="batch-dialog">Cancel</button><button class="primary" type="submit">Save batch</button></div>
+  </form></dialog>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <script src="/app.js"></script>
+</body></html>

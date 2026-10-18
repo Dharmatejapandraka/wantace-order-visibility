@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: wantace-order-visibility
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: MONGODB_URI
+        sync: false
+      - key: DB_NAME
+        value: wantace_order_tracker
